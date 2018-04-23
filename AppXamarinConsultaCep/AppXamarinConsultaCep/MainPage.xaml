@@ -6,7 +6,7 @@
 
     <StackLayout>
         <Entry x:Name="txtCep" Placeholder="Informe o cep"></Entry>
-        <Button x:Name="btnBuscarCep" Text="Buscar CEP" Clicked="btnBuscarCep_Clicked"></Button>
+        <Button x:Name="btnBuscarCep" Text="Buscar CEP" Clicked="BtnBuscarCep_Clicked"></Button>
     </StackLayout>
 
 </ContentPage>
