@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppXamarinConsultaCep.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace AppXamarinConsultaCep
 		{
 			InitializeComponent();
 
-			MainPage = new AppXamarinConsultaCep.MainPage();
+			MainPage = new BuscaCepPage();
 		}
 
 		protected override void OnStart ()
