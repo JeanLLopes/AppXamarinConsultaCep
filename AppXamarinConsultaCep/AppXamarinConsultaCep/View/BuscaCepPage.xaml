@@ -3,16 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppXamarinConsultaCep.View.BuscaCepPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="5,0" Spacing="5">
             <!--AQUI NO FAZEMOS O BINDING DA TELA COM A VIEWMODEL
             O NOME DEVE ESTAR IGUAL AO DA VIEWMODEL-->
-            <Entry Text="{Binding Cep}" />
-            <Button Text="Buscar CEP"  />
-            
+            <Entry Text="{Binding CepBusca}" />
+            <Button Text="Buscar CEP" Command="{Binding BuscarCommand}" />
+
             <!--AQUI NOS VAMOS CRIAR UM CAMPOS QUE VAI REPETIR O VALOR 
             INSERIDO NO CEP, PARA VALIDARMOS SE OS VALORES ESTÃO SENDO 
-            ATUALIZADOS EM TEMPO DE EXECUÇÃO--> 
-            <Label Text="{Binding Cep}" />
+            ATUALIZADOS EM TEMPO DE EXECUÇÃO-->
+            <!--<Label Text="{Binding Cep}" />-->
+
+            <StackLayout Spacing="2" IsVisible="{Binding HasCep}">
+                <Label Text="Cep" FontAttributes="Bold" />
+                <Label Text="{Binding Cep}" />
+            </StackLayout>
+
+            <StackLayout Spacing="2" IsVisible="{Binding HasCep}">
+                <Label Text="Logradouro" FontAttributes="Bold" />
+                <Label Text="{Binding Logradouro}" />
+            </StackLayout>
+
+            <StackLayout Spacing="2" IsVisible="{Binding HasCep}">
+
+                <Label Text="Bairro" FontAttributes="Bold" />
+                <Label Text="{Binding Bairro}"/>
+            </StackLayout>
+
+            <StackLayout Spacing="2" IsVisible="{Binding HasCep}">
+                <Label Text="Localidade" FontAttributes="Bold" />
+                <Label Text="{Binding Localidade}"/>
+            </StackLayout>
+
+            <StackLayout Spacing="2" IsVisible="{Binding HasCep}">
+                <Label Text="Uf" FontAttributes="Bold" />
+                <Label Text="{Binding Uf}"/>
+            </StackLayout>
         </StackLayout>
 
     </ContentPage.Content>

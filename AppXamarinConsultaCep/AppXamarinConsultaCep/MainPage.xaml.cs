@@ -18,7 +18,7 @@ namespace AppXamarinConsultaCep
             try
             {
                 var result = await ViaCepHttpClient.Current.BuscarCep(txtCep.Text);
-                await DisplayAlert("Parabéns", result, "Ok");
+                await DisplayAlert("Parabéns", "", "Ok");
             }
             catch (Exception ex)
             {

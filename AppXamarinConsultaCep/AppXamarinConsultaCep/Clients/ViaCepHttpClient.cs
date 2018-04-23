@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AppXamarinConsultaCep.Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -24,7 +26,7 @@ namespace AppXamarinConsultaCep.Clients
         //FINAL
 
 
-        public async Task<string> BuscarCep(string cep)
+        public async Task<ViaCepModel> BuscarCep(string cep)
         {
             if (!string.IsNullOrEmpty(cep))
             {
@@ -34,7 +36,15 @@ namespace AppXamarinConsultaCep.Clients
                     {
                         if (response.IsSuccessStatusCode)
                         {
-                            return await response.Content.ReadAsStringAsync();
+                            var returno = await response.Content.ReadAsStringAsync();
+                            if (!string.IsNullOrWhiteSpace(returno))
+                            {
+                                return JsonConvert.DeserializeObject<ViaCepModel>(returno);
+                            }
+                            else
+                            {
+                                throw new Exception("A API retornou vazio");
+                            }
                         }
                         else
                         {

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace AppXamarinConsultaCep.ViewModel
+namespace AppXamarinConsultaCep.ViewModel.Base
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
