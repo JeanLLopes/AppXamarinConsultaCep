@@ -4,8 +4,9 @@
              xmlns:local="clr-namespace:AppXamarinConsultaCep"
              x:Class="AppXamarinConsultaCep.MainPage">
 
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+    <StackLayout>
+        <Entry x:Name="txtCep" Placeholder="Informe o cep"></Entry>
+        <Button x:Name="btnBuscarCep" Text="Buscar CEP" Clicked="btnBuscarCep_Clicked"></Button>
+    </StackLayout>
 
 </ContentPage>
