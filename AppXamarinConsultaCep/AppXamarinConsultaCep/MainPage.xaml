@@ -5,8 +5,8 @@
              x:Class="AppXamarinConsultaCep.MainPage">
 
     <StackLayout>
-        <Entry x:Name="txtCep" Placeholder="Informe o cep"></Entry>
-        <Button x:Name="btnBuscarCep" Text="Buscar CEP" Clicked="BtnBuscarCep_Clicked"></Button>
+        <Entry x:Name="txtCep" Placeholder="Informe o cep" />
+        <Button x:Name="btnBuscarCep" Text="Buscar CEP" Clicked="BtnBuscarCep_Clicked" />
     </StackLayout>
 
 </ContentPage>
