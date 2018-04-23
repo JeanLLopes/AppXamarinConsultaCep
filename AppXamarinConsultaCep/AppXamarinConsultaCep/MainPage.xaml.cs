@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppXamarinConsultaCep.Clients;
+using System;
 using System.Net.Http;
 using Xamarin.Forms;
 
@@ -14,7 +15,15 @@ namespace AppXamarinConsultaCep
 
 		protected async void BtnBuscarCep_Clicked(object sender, EventArgs e)
 		{
-            await DisplayAlert("Parabéns", result, "Ok");
+            try
+            {
+                var result = await ViaCepHttpClient.Current.BuscarCep(txtCep.Text);
+                await DisplayAlert("Parabéns", result, "Ok");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "Ok");
+            }
         }
 
 	}

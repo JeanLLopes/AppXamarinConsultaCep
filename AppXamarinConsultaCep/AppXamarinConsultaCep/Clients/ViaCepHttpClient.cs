@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace AppXamarinConsultaCep.Clients
 {
-    class ViaCepHttpClient
+    public class ViaCepHttpClient
     {
+        //TRHEAD SAVE SINGTON
+        //INICIO
+        //LAZY = INICIALIZAÇÃO TARDIA VAI INICIALIZAR E ASSIM QUE ESTIVER PRONTO VAI PARA O CONSTRUTOR
         private static Lazy<ViaCepHttpClient> _lazy = new Lazy<ViaCepHttpClient>(() => new ViaCepHttpClient());
         private readonly HttpClient _httpClient;
 
@@ -17,38 +20,33 @@ namespace AppXamarinConsultaCep.Clients
         {
             _httpClient = new HttpClient();
         }
+        //TRHEAD SAVE SINGTON
+        //FINAL
+
 
         public async Task<string> BuscarCep(string cep)
         {
-            try
+            if (!string.IsNullOrEmpty(cep))
             {
-                if (!string.IsNullOrEmpty(cep))
+                using (var client = new HttpClient())
                 {
-                    using (var client = new HttpClient())
+                    using (var response = await _httpClient.GetAsync(string.Format("https://viacep.com.br/ws/{0}/json/", cep)))
                     {
-                        using (var response = await _httpClient.GetAsync(string.Format("https://viacep.com.br/ws/{0}/json/", cep)))
+                        if (response.IsSuccessStatusCode)
                         {
-                            if (response.IsSuccessStatusCode)
-                            {
-                                return await response.Content.ReadAsStringAsync();
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException("Erro ao chamar a API");
-                            }
+                            return await response.Content.ReadAsStringAsync();
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Erro ao chamar a API");
                         }
                     }
                 }
-                else
-                {
-                    throw new InvalidOperationException("Erro ao informar o cep");
-                }
             }
-            catch (Exception ex)
+            else
             {
-                return ex.Message;
+                throw new InvalidOperationException("Erro ao informar o cep");
             }
-
         }
     }
 }
