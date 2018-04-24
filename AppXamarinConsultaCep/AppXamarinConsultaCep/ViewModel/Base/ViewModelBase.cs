@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace AppXamarinConsultaCep.ViewModel.Base
 {
@@ -21,5 +23,12 @@ namespace AppXamarinConsultaCep.ViewModel.Base
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+
+        #region NAVEGAÇÂO
+
+        //AQUI NOS DEFINIMOS COMO VAI SER A BASE DA NAVEGAÇÃO DE NOSSO SITE
+        protected Task PushAsync(Page page,bool animated = true) => App.Current.MainPage.Navigation.PushAsync(page, animated);
+        #endregion
     }
 }

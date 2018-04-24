@@ -14,7 +14,9 @@ namespace AppXamarinConsultaCep
 		{
 			InitializeComponent();
 
-			MainPage = new BuscaCepPage();
+            //CRIAMOS UMA PILHA DE NAVEGAÇÃO
+            //E COLOCAMOS COMO PAGINA INICIAL A CepsPage()
+			MainPage = new NavigationPage(new CepsPages());
 		}
 
 		protected override void OnStart ()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppXamarinConsultaCep.ViewModel;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -17,17 +18,7 @@ namespace AppXamarinConsultaCep.View
         public CepsPages()
         {
             InitializeComponent();
-
-            Items = new ObservableCollection<string>
-            {
-                "Item 1",
-                "Item 2",
-                "Item 3",
-                "Item 4",
-                "Item 5"
-            };
-			
-			MyListView.ItemsSource = Items;
+            BindingContext = new CepsPagesViewModel();
         }
 
         async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)

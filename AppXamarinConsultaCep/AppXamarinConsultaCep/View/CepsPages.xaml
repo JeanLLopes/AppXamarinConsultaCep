@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppXamarinConsultaCep.View.CepsPages">
+             x:Class="AppXamarinConsultaCep.View.CepsPages"
+             Title="Ceps Cadastrados">
+<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Buscar" 
+                     Command="{Binding BuscarCommand}"
+                     Icon="ic_add_box.png"></ToolbarItem>    
+</ContentPage.ToolbarItems>
+    
+    
   <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
+            ItemsSource="{Binding Ceps}"
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement">
             
