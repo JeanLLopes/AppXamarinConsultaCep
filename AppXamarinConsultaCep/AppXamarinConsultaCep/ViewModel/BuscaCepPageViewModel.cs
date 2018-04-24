@@ -23,6 +23,8 @@ namespace AppXamarinConsultaCep.ViewModel
         private string _Localidade { get; set; }
         private string _Uf { get; set; }
 
+        private bool _IsBusy = false;
+
         //AQUI NOS ALTERAMOS O GET E O SETER POR UM MOTIVO
         //QUANDO EU SETAR UM VALOR NOVO NA CAMPO DE Cep
         //NA TELA ELE VAI ATUALIZAR A PROPRIEDADE PRIVADA
@@ -81,12 +83,22 @@ namespace AppXamarinConsultaCep.ViewModel
                 OnPropertyChanged();
             }
         }
-
-
+        public bool IsNotBusy { get => !IsBusy; }
         public bool HasCep
         {
             get => !string.IsNullOrWhiteSpace(_Cep);
         }
+        public bool IsBusy
+        {
+            get => _IsBusy;
+            set
+            {
+                _IsBusy = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotBusy));
+            }
+        }
+
         #endregion
 
 
@@ -94,12 +106,26 @@ namespace AppXamarinConsultaCep.ViewModel
         #region COMMAND
         private Command _BuscarCommand;
 
-        public Command BuscarCommand => _BuscarCommand ?? (_BuscarCommand = new Command(async () => await BuscarCommandExecute()));
+        //PASSAMOS UM PARAMETRO A MAIS PARA VERIFICAR SE O BOTAO FOI CLICADO
+        public Command BuscarCommand => _BuscarCommand ?? (_BuscarCommand = new Command(async () => await BuscarCommandExecute(), () => IsNotBusy));
 
         private async Task BuscarCommandExecute()
         {
             try
             {
+                //CASO O USUARIO CLIQUE POR VARIAS VEZES NO BOTAO;
+                //E ALTERAMOS O ESTADO DELE
+                if (IsBusy)
+                {
+                    return;
+                }
+                else
+                {
+                    IsBusy = true;
+                    BuscarCommand.ChangeCanExecute();
+                }
+
+
                 var result = await ViaCepHttpClient.Current.BuscarCep(CepBusca);
                 Cep = result.Cep;
                 if (HasCep)
@@ -116,6 +142,12 @@ namespace AppXamarinConsultaCep.ViewModel
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+            }
+            finally
+            {
+                //AQUI NOS REABILITAMOS O BOTAO
+                IsBusy = false;
+                BuscarCommand.ChangeCanExecute();
             }
 
         }

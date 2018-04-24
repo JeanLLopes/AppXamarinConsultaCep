@@ -8,7 +8,7 @@
             O NOME DEVE ESTAR IGUAL AO DA VIEWMODEL-->
             <Entry Text="{Binding CepBusca}" />
             <Button Text="Buscar CEP" Command="{Binding BuscarCommand}" />
-
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"></ActivityIndicator>
             <!--AQUI NOS VAMOS CRIAR UM CAMPOS QUE VAI REPETIR O VALOR 
             INSERIDO NO CEP, PARA VALIDARMOS SE OS VALORES ESTÃO SENDO 
             ATUALIZADOS EM TEMPO DE EXECUÇÃO-->
