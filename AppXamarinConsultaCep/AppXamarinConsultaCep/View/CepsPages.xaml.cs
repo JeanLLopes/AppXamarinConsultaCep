@@ -13,6 +13,8 @@ namespace AppXamarinConsultaCep.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CepsPages : ContentPage
     {
+        private bool _FirtRun = true;
+
         public ObservableCollection<string> Items { get; set; }
 
         public CepsPages()
@@ -30,6 +32,17 @@ namespace AppXamarinConsultaCep.View
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
+        }
+
+
+        protected override void OnAppearing()
+        {
+            if (_FirtRun)
+            {
+                ((CepsPagesViewModel)BindingContext).RefreshCommand.Execute(null);
+                _FirtRun = false;
+            }
+            base.OnAppearing();
         }
     }
 }

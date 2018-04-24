@@ -1,4 +1,6 @@
 ﻿using AppXamarinConsultaCep.Clients;
+using AppXamarinConsultaCep.Messages;
+using AppXamarinConsultaCep.Model;
 using AppXamarinConsultaCep.ViewModel.Base;
 using System;
 using System.Collections.Generic;
@@ -16,12 +18,9 @@ namespace AppXamarinConsultaCep.ViewModel
         }
 
         #region VIEWMODEL
+        public ViaCepModel _ViaCep { get; set; } = null;
         private string _Cep { get; set; }
         private string _CepBusca { get; set; }
-        private string _Logradouro { get; set; }
-        private string _Bairro { get; set; }
-        private string _Localidade { get; set; }
-        private string _Uf { get; set; }
 
         private bool _IsBusy = false;
 
@@ -29,15 +28,11 @@ namespace AppXamarinConsultaCep.ViewModel
         //QUANDO EU SETAR UM VALOR NOVO NA CAMPO DE Cep
         //NA TELA ELE VAI ATUALIZAR A PROPRIEDADE PRIVADA
         //E DEPOSI ATUALIZAR A TELA USANDO O OnPropertyChanged(); 
-        public string Cep
-        {
-            get => _Cep;
-            set
-            {
-                _Cep = value;
-                OnPropertyChanged();
-            }
-        }
+        public string Cep { get => _ViaCep?.Cep;}
+        public string Logradouro { get => _ViaCep?.Logradouro; }
+        public string Localidade { get => _ViaCep?.Localidade; }
+        public string Bairro { get => _ViaCep?.Bairro; }
+        public string Uf { get => _ViaCep?.Uf; }
         public string CepBusca
         {
             get => _CepBusca;
@@ -47,46 +42,10 @@ namespace AppXamarinConsultaCep.ViewModel
                 OnPropertyChanged();
             }
         }
-        public string Logradouro
-        {
-            get => _Logradouro;
-            set
-            {
-                _Logradouro = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Localidade
-        {
-            get => _Localidade;
-            set
-            {
-                _Localidade = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Bairro
-        {
-            get => _Bairro;
-            set
-            {
-                _Bairro = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Uf
-        {
-            get => _Uf;
-            set
-            {
-                _Uf = value;
-                OnPropertyChanged();
-            }
-        }
         public bool IsNotBusy { get => !IsBusy; }
         public bool HasCep
         {
-            get => !string.IsNullOrWhiteSpace(_Cep);
+            get => _ViaCep != null;
         }
         public bool IsBusy
         {
@@ -124,11 +83,14 @@ namespace AppXamarinConsultaCep.ViewModel
                     IsBusy = true;
                     BuscarCommand.ChangeCanExecute();
                     AdicionarCepCommand.ChangeCanExecute();
+
+                    //SALVAMOS O CEP NO BANCO DE DADOS
+                    Data.DatabaseService.Current.Save(_ViaCep);
                 }
 
 
                 //CONFIGURAMOS A MENSAGEM QUE VAI SER ENVIADA PARA A VIEWMODEL
-                MessagingCenter.Send(this, "ADICIONAR_CEP");
+                MessagingCenter.Send(this, MessagesKey.CepsAtualizados);
 
                 //REMOVEMOS A PAGINA DA PILHA
                 await PopAsync();
@@ -167,17 +129,16 @@ namespace AppXamarinConsultaCep.ViewModel
                 }
 
 
-                var result = await ViaCepHttpClient.Current.BuscarCep(CepBusca);
-                Cep = result.Cep;
-                if (HasCep)
-                {
-                    Logradouro = result.Logradouro;
-                    Localidade = result.Localidade;
-                    Bairro = result.Bairro;
-                    Uf = result.Uf;
-                }
-                
+                _ViaCep = await ViaCepHttpClient.Current.BuscarCep(CepBusca);
+                _ViaCep.Id = new Guid();
+
+
                 //CHAMAMOS O HASCEP AQUIP PARA ELE ATUALIZAR PARA TRUE
+                OnPropertyChanged(nameof(Cep));
+                OnPropertyChanged(nameof(Localidade));
+                OnPropertyChanged(nameof(Logradouro));
+                OnPropertyChanged(nameof(Bairro));
+                OnPropertyChanged(nameof(Uf));
                 OnPropertyChanged(nameof(HasCep));
             }
             catch (Exception ex)
