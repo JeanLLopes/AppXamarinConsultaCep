@@ -105,9 +105,49 @@ namespace AppXamarinConsultaCep.ViewModel
 
         #region COMMAND
         private Command _BuscarCommand;
-
+        private Command _AdicionarCepCommand;
         //PASSAMOS UM PARAMETRO A MAIS PARA VERIFICAR SE O BOTAO FOI CLICADO
         public Command BuscarCommand => _BuscarCommand ?? (_BuscarCommand = new Command(async () => await BuscarCommandExecute(), () => IsNotBusy));
+
+        public Command AdicionarCepCommand => _AdicionarCepCommand ?? (_AdicionarCepCommand = new Command(async() => await AdicionarCepCommandExecute(), () => IsNotBusy));
+        
+        private async Task AdicionarCepCommandExecute()
+        {
+            try
+            {
+                if (IsBusy)
+                {
+                    return;
+                }
+                else
+                {
+                    IsBusy = true;
+                    BuscarCommand.ChangeCanExecute();
+                    AdicionarCepCommand.ChangeCanExecute();
+                }
+
+
+                //CONFIGURAMOS A MENSAGEM QUE VAI SER ENVIADA PARA A VIEWMODEL
+                MessagingCenter.Send(this, "ADICIONAR_CEP");
+
+                //REMOVEMOS A PAGINA DA PILHA
+                await PopAsync();
+
+                //VAMOS AVISAR A TELA DE LISTA DE CEPS QUE UM NOVO CEP DEVE SER ADICIONADO
+                await Task.FromResult<object>(null);
+            }
+            catch (Exception)
+            {
+
+
+            }
+            finally
+            {
+                IsBusy = false;
+                BuscarCommand.ChangeCanExecute();
+                AdicionarCepCommand.ChangeCanExecute();
+            }
+        }
 
         private async Task BuscarCommandExecute()
         {
@@ -123,6 +163,7 @@ namespace AppXamarinConsultaCep.ViewModel
                 {
                     IsBusy = true;
                     BuscarCommand.ChangeCanExecute();
+                    AdicionarCepCommand.ChangeCanExecute();
                 }
 
 
@@ -148,10 +189,11 @@ namespace AppXamarinConsultaCep.ViewModel
                 //AQUI NOS REABILITAMOS O BOTAO
                 IsBusy = false;
                 BuscarCommand.ChangeCanExecute();
+                AdicionarCepCommand.ChangeCanExecute();
             }
 
         }
-
+  
         #endregion
     }
 }

@@ -29,6 +29,9 @@ namespace AppXamarinConsultaCep.ViewModel.Base
 
         //AQUI NOS DEFINIMOS COMO VAI SER A BASE DA NAVEGAÇÃO DE NOSSO SITE
         protected Task PushAsync(Page page,bool animated = true) => App.Current.MainPage.Navigation.PushAsync(page, animated);
+
+        //AQUI NO REMOVEMOS O ITEM DA PILHA DE NAVEGAÇÃO
+        protected Task PopAsync(bool animation = true) => App.Current.MainPage.Navigation.PopAsync(animation);
         #endregion
     }
 }

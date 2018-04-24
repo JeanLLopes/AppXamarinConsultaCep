@@ -39,6 +39,9 @@
                 <Label Text="Uf" FontAttributes="Bold" />
                 <Label Text="{Binding Uf}"/>
             </StackLayout>
+            <Button Text="Adicionar aos Favoritos"
+                    IsVisible="{Binding HasCep}"
+                    Command="{Binding AdicionarCepCommand}"></Button>
         </StackLayout>
 
     </ContentPage.Content>
